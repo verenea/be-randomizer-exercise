@@ -1,7 +1,0 @@
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\bin\Release\RandomizerExercise.exe.config
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\bin\Release\RandomizerExercise.exe
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\bin\Release\RandomizerExercise.pdb
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\obj\Release\RandomizerExercise.csproj.CoreCompileInputs.cache
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\obj\Release\RandomizerExercise.exe
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\obj\Release\RandomizerExercise.pdb
-C:\Users\K5IMIEAV\Documents\sandbox\RandomizerExercise\RandomizerExercise\obj\Release\RandomizerExercise.csprojAssemblyReference.cache
