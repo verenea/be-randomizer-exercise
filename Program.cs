@@ -28,15 +28,14 @@ namespace RandomizerExercise {
             // ===============================================
 
             // stuff a collection from min -> max
-            IEnumerable<int> numbers = Enumerable.Range(min, max);
+            var numbers = Enumerable.Range(min, max).ToArray();
 
-            // shuffle the numbers using our static randomizer
-            // attempt to optimize performance by limiting scope of possible random index range with min and max
-            // https://docs.microsoft.com/en-us/dotnet/api/system.random.next?redirectedfrom=MSDN&view=net-5.0#System_Random_Next
-            List<int> results = numbers.OrderBy(x => rnd.Next(min, max)).ToList();
+            // version #1 with FY
+            var shuffled = Shuffle(numbers);
 
-            // Note: at first, I was going to implement a version of fisher-yates shuffle (https://www.dotnetperls.com/fisher-yates-shuffle)
-            //       but the above Linq orderby() with random selection of our given range is cleaner to read
+            // version #2 with linq
+            //var shuffled = numbers.OrderBy(x => rnd.Next(min, max));
+
             // == END ALGORITH ================================
 
 
@@ -45,18 +44,19 @@ namespace RandomizerExercise {
             // ===============================================
 
             // print numbers to console window for viewing
-            results.ForEach(x => Console.WriteLine(x));
+            shuffled.ToList().ForEach(x => Console.WriteLine(x));
 
             Console.WriteLine(Environment.NewLine + "******************************************" + Environment.NewLine);
 
+            Console.WriteLine($"Randomization time took: {(DateTime.Now - startTime).TotalSeconds:0.0} seconds" + Environment.NewLine);
 
             // ===============================================
             // 3. VALIDATION
             // ===============================================
 
-            bool isValid = AreResultsValid(results);
+            bool isValid = AreResultsValid(shuffled);
 
-            Console.WriteLine(isValid ? "Results Validated!" : $"RESULTS ARE INVALID, check the code (count: {results.Count})");
+            Console.WriteLine(isValid ? "Results Validated!" : $"RESULTS ARE INVALID, check the code (count: {shuffled.Count()})");
 
             // ===============================================
             // 4. FILE OUTPUT
@@ -64,7 +64,7 @@ namespace RandomizerExercise {
 
             if (isValid && getBoolConfig("EnableFileOutput")) {
                 try {
-                    GenerateResultsFile(results);
+                    GenerateResultsFile(shuffled);
                 } catch (Exception ex) {
                     Console.WriteLine($"Unable to generate results file: {ex.Message}");
                 }
@@ -78,6 +78,18 @@ namespace RandomizerExercise {
 
             // keep console open
             Console.ReadLine();
+        }
+
+        static T[] Shuffle<T>(T[] array) {
+            int n = array.Length;
+            for (int i = 0; i < (n - 1); i++) {
+                int r = i + rnd.Next(n - i);
+                T t = array[r];
+                array[r] = array[i];
+                array[i] = t;
+                //Console.WriteLine(t);
+            }
+            return array;
         }
 
         /// <summary>
@@ -96,10 +108,10 @@ namespace RandomizerExercise {
         /// <summary>
         /// Renders and saves a .TXT file with a list of numbers
         /// </summary>
-        static void GenerateResultsFile(List<int> numbers) {
+        static void GenerateResultsFile(IEnumerable<int> numbers) {
 
             // convert the results to strings for file
-            List<string> lines = numbers.ConvertAll<string>(x => x.ToString());
+            List<string> lines = numbers.ToList().ConvertAll<string>(x => x.ToString());
 
             // identify file prefix
             string fileNamePre = getConfigValue("OutputFilePrefix") ?? "results";
